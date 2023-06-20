@@ -171,7 +171,8 @@ func (c *Contract) getNonces(method string, sender string) (*big.Int, error) {
 func (c *Contract) Nonces(sender string) (*big.Int, error) {
 	for _, method := range []string{
 		"nonces",
-		"_nonces", // eth.aaveToken
+		"getNonce", // polygon.dai
+		"_nonces",  // eth.aaveToken
 	} {
 		n, err := c.getNonces(method, sender)
 		if err == nil {
@@ -215,11 +216,13 @@ func (c *Contract) Version() (string, error) {
 	for _, method := range []string{
 		"version",
 		"EIP712_VERSION", // polygon.USDC
+		"ERC712_VERSION", // polygon.DAI
 	} {
 		r, err := c.getString(method)
 		if err == nil {
 			return r, err
 		}
 	}
-	return "", fmt.Errorf("can not get Version")
+	// default is 1
+	return "1", nil
 }
