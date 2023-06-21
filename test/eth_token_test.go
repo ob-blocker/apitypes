@@ -37,6 +37,10 @@ func TestBuildTokenTypeETH(t *testing.T) {
 		"0xfcf8eda095e37a41e002e266daad7efc1579bc0a",
 		"0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c",
 		"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
+		"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+		"0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+		"0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3",
+		"0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
 	} {
 		data, err := c.TokenTypedData(&tokentype.PermitMessage{
 			Token:    token,

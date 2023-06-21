@@ -55,6 +55,20 @@ func (client *Client) getDefaultContract(address common.Address) (*Contract, err
 	}, nil
 }
 
+func (client *Client) getImplementationBySlot(address common.Address) (common.Address, error) {
+	var impl string
+	err := fmt.Errorf("can not get impl by slot")
+	for _, slot := range IMPLEMENTATION_SLOTS {
+		bytes, _ := client.ethClient.StorageAt(client.ctx, address, common.HexToHash(slot), nil)
+		impl = hexutil.Encode(bytes)
+		if impl != ZERO_ADDRESS {
+			err = nil
+			break
+		}
+	}
+	return common.HexToAddress(impl), err
+}
+
 func (client *Client) NewContract(address string) (*Contract, error) {
 	addr := common.HexToAddress(address)
 	url, ok := APIMap[client.chainId.String()]
@@ -82,8 +96,12 @@ func (client *Client) NewContract(address string) (*Contract, error) {
 	// get implement address
 	impl, err := contract.Implementation()
 	if err != nil {
-		client.logger.WithError(err).Error("get Implementation")
-		return contract, err
+		var err1 error
+		impl, err1 = client.getImplementationBySlot(addr)
+		if err1 != nil {
+			client.logger.WithError(err).Error("get Implementation failed: %v", err1.Error())
+			return contract, err1
+		}
 	}
 
 	// fetch implement abi

@@ -2,6 +2,8 @@ package tokentype
 
 import "github.com/ethereum/go-ethereum/signer/core/apitypes"
 
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
 // permit types
 var (
 	// Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)
@@ -82,4 +84,9 @@ var APIMap = map[string]string{
 	"97":    "https://api-testnet.bscscan.com/api",     // bsc testnet
 	"137":   "https://api.polygonscan.com/api",         // polygon mainnet
 	"80001": "https://api-testnet.polygonscan.com/api", // polygon testnet
+}
+
+var IMPLEMENTATION_SLOTS = []string{
+	"0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc", // bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
+	"0x7050c9e0f4ca769c69bd3a8ef740bc37934f8e2c036e5a723fd8ee048ed3f8c3", // keccak256("org.zeppelinos.proxy.implementation"))
 }
